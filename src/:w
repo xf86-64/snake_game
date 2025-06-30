@@ -37,6 +37,13 @@ void remove_node(Node **head, Node *node_to_remove) {
   free(node_to_remove);
 }
 
+void insert_after(Node *node_to_insert_after, Node *new_node) {
+  if (node_to_insert_after) {
+    new_node->next = node_to_insert_after->next;
+    node_to_insert_after->next = new_node;
+  } else
+    return;
+}
 Node *init_snake(DefaultValues _default) {
   Node *snake_head =
       create_node(_default.defaultSnakeX, _default.defaultSnakeY);
@@ -44,6 +51,8 @@ Node *init_snake(DefaultValues _default) {
       create_node(_default.defaultSnakeX + 1, _default.defaultSnakeY);
 
   insert_at_head(&snake_body, snake_head);
+  insert_after(snake_body,
+               create_node(_default.defaultSnakeX + 2, _default.defaultSnakeX));
   snake_body = snake_head;
   Node *ptr = snake_body;
   while (ptr) {
@@ -53,7 +62,7 @@ Node *init_snake(DefaultValues _default) {
   refresh();
   return snake_head;
 }
-Directions get_direction(Directions *dir, Directions prev_dir) {
+enum Directions get_direction(enum Directions *dir, enum Directions prev_dir) {
   int ch = getch();
   switch (ch) {
   case KEY_LEFT:
@@ -81,8 +90,8 @@ Directions get_direction(Directions *dir, Directions prev_dir) {
   }
   return *dir;
 }
-void move_snake(Directions dir, Node **snake_head) {
-  int opX = 0, opY = 0;
+void move_snake(enum Directions dir, Node *snake_head) {
+  int opX = 1, opY = 1;
 
   switch (dir) {
   case LEFT:
@@ -98,17 +107,21 @@ void move_snake(Directions dir, Node **snake_head) {
     opY = 1;
     break;
   }
-  unsigned int newHeadX = (*snake_head)->x + (opX),
-               newHeadY = (*snake_head)->y + (opY);
+  unsigned int newHeadX = snake_head->x + (opX),
+               newHeadY = snake_head->y + (opY);
   Node *new_head = create_node(newHeadX, newHeadY);
-  insert_at_head(snake_head, new_head);
-  Node *ptr = new_head;
-  while (ptr->next->next) {
-    ptr = ptr->next;
+  Node *ptr = snake_head;
+  insert_at_head(&snake_head, new_head);
+  while (snake_head->next) {
+    if (dir == LEFT || dir == RIGHT)
+      snake_head += opX;
+    else if (dir == UP || dir == DOWN)
+      snake_head += opY;
+    snake_head = snake_head->next;
   }
-
-  remove_node(&new_head, ptr->next);
-  ptr->next = NULL;
+  Node *last_el = snake_head;
+  free(last_el);
+  snake_head = ptr;
 }
 
 void display(Node *snake) {

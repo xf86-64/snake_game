@@ -1,15 +1,18 @@
 
-root_include_dir := include
-root_source_dir  := src
-compile_flags    := -Wall 
-libs             := -lncurses
-CC               := gcc
+ROOT_SOURCE_DIR  = src
+COMPILE_FLAGS    = -Wall 
+LIBS             = -lncurses
+CC               = gcc
+BUILD_DIR_NAME 	 = bin
+PROGRAM_NAME 	 = snake
 
-build:
-	$(CC) -o bin/snake ${compile_flags} ${libs} ${root_source_dir}/*.c
-debug_build: 
-	$(CC) -o bin/snake -g ${compile_flags} ${libs} ${root_source_dir}/*.c
-.PHONY: clean
+build:	
+	@if [ ! -d $(BUILD_DIR_NAME) ] ; then echo "I'm creating build dir..."; mkdir $(BUILD_DIR_NAME); echo "Done"; else echo "Directory already exists"; fi
+	@if [ ! -f $(BUILD_DIR_NAME)/$(PROGRAM_NAME) ]; then echo "Compiling... (default mode)"; $(CC) -o $(BUILD_DIR_NAME)/$(PROGRAM_NAME) ${LIBS} ${ROOT_SOURCE_DIR}/*.c; fi
+debug_build:	
+	@if [ ! -d $(BUILD_DIR_NAME) ] ; then echo "I'm creating build dir..."; mkdir $(BUILD_DIR_NAME); echo "Done"; else echo "Directory already exists"; fi
+	@if [ ! -f $(BUILD_DIR_NAME)/$(PROGRAM_NAME) ]; then echo "Compiling... (debug mode)"; $(CC) -o $(BUILD_DIR_NAME)/$(PROGRAM_NAME) -g ${LIBS} ${ROOT_SOURCE_DIR}/*.c; fi
 
 clean:
-	rm bin/snake
+	@if [ ! -d $(BUILD_DIR_NAME) ] ; then echo "no such directory"; else echo "Clean up..."; rm -rf $(BUILD_DIR_NAME); fi
+

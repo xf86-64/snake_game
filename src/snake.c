@@ -1,13 +1,13 @@
 #include "../include/snake.h"
 
-Node *create_node(unsigned int x, unsigned int y) {
+static Node *create_node(unsigned int x, unsigned int y) {
   Node *node = malloc(sizeof(Node));
   node->x = x;
   node->y = y;
   node->next = NULL;
   return node;
 }
-void insert_at_head(Node **head, Node *node) {
+static void insert_at_head(Node **head, Node *node) {
   node->next = *head;
   *head = node;
 }
@@ -20,7 +20,7 @@ void delete_list(Node *head) {
     ptr = next;
   }
 }
-void remove_node(Node **head, Node *node_to_remove) {
+static void remove_node(Node **head, Node *node_to_remove) {
   if (*head == node_to_remove) {
     *head = node_to_remove->next;
     free(head);
@@ -57,21 +57,25 @@ Directions get_direction(Directions *dir, Directions prev_dir) {
   int ch = getch();
   switch (ch) {
   case KEY_LEFT:
+  case 'a':
     if (prev_dir != RIGHT)
       *dir = LEFT;
     break;
 
   case KEY_RIGHT:
+  case 'd':
     if (prev_dir != LEFT)
       *dir = RIGHT;
     break;
 
   case KEY_UP:
+  case 'w':
     if (prev_dir != DOWN)
       *dir = UP;
     break;
 
   case KEY_DOWN:
+  case 's':
     if (prev_dir != UP)
       *dir = DOWN;
     break;
@@ -81,7 +85,10 @@ Directions get_direction(Directions *dir, Directions prev_dir) {
   }
   return *dir;
 }
-void move_snake(Directions dir, Node **snake_head) {
+bool move_snake(Directions dir, Node **snake_head,
+                bool *restrict is_delete_tail) {
+
+  bool collision_with_body = false;
   int opX = 0, opY = 0;
 
   switch (dir) {
@@ -102,19 +109,31 @@ void move_snake(Directions dir, Node **snake_head) {
                newHeadY = (*snake_head)->y + (opY);
   Node *new_head = create_node(newHeadX, newHeadY);
   insert_at_head(snake_head, new_head);
-  Node *ptr = new_head;
-  while (ptr->next->next) {
+  if (!(*is_delete_tail)) {
+    Node *ptr = new_head;
+    while (ptr->next->next) {
+      ptr = ptr->next;
+    }
+
+    remove_node(&new_head, ptr->next);
+  } else
+    *is_delete_tail = false;
+
+  Node *ptr = new_head->next;
+  while (ptr) {
+    if (new_head->x == ptr->x && new_head->y == ptr->y) {
+      collision_with_body = true;
+      break;
+    }
     ptr = ptr->next;
   }
-
-  remove_node(&new_head, ptr->next);
-  ptr->next = NULL;
+  return collision_with_body;
 }
 
-void display(Node *snake) {
+void display(Node *snake, const chtype symbol) {
   Node *ptr = snake;
   while (snake) {
-    mvaddch(snake->y, snake->x, ACS_BLOCK);
+    mvaddch(snake->y, snake->x, symbol);
     snake = snake->next;
   }
   snake = ptr;
@@ -123,4 +142,41 @@ void display(Node *snake) {
 bool is_beyond_border(Node *snake_head, Field field) {
   return (snake_head->x < 0 || snake_head->y < 0 ||
           snake_head->x > field.x_max || snake_head->y > field.y_max);
+}
+
+Node *fill_food_list(unsigned int foodCount, Field field) {
+
+  unsigned int min_coord_x = 1;
+  unsigned int max_coord_x = field.x_max;
+
+  unsigned int min_coord_y = 1;
+  unsigned int max_coord_y = field.y_max;
+
+  unsigned int expressionX = max_coord_x - min_coord_x + 1;
+  unsigned int expressionY = max_coord_y - min_coord_y + 1;
+
+  Node *head = create_node(rand() % expressionX, rand() % expressionY);
+  for (unsigned int i = 0; i < foodCount - 1; i++) {
+
+    Node *generated = create_node(rand() % expressionX, rand() % expressionY);
+    insert_at_head(&head, generated);
+  }
+  return head;
+}
+void generate_food(Node *food_list, const chtype symbol) {
+  mvaddch(food_list->y, food_list->x, symbol);
+}
+static void remove_from_food_list(Node **food_list) {
+  Node *next = (*food_list)->next;
+  free(*food_list);
+  *food_list = next;
+}
+bool detect_eaten_food(Node **food_list, Node *snake_head) {
+  if ((*food_list)->x == snake_head->x && (*food_list)->y == snake_head->y) {
+    mvaddch((*food_list)->y, (*food_list)->x, ' ');
+    remove_from_food_list(food_list);
+
+    return true;
+  }
+  return false;
 }

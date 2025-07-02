@@ -60,9 +60,10 @@ int main(int argc, char *argv[]) {
   if (food == NULL && dir != -1 && is_beyond_border(snake, field)) {
     delete_list(snake);
     endwin();
+  } else {
+    delete_list(snake);
+    delete_list(food);
+    endwin();
   }
-  delete_list(snake);
-  delete_list(food);
-  endwin();
   return 0;
 }

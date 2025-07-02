@@ -10,10 +10,10 @@ cd bin/
 ./snake
 ```
 
-Also to clean(remove build directory) use ``` make clean ```
+Also to clean(remove build directory) use `make clean `
 
 
-You are free to specify the amount of food that appears when you start the game ./snake <count>
+You are free to specify the amount of food that appears when you start the game `./snake <your count>`
 default count = 10
 
 

@@ -1,0 +1,24 @@
+#!/bin/bash
+
+echo "Compiling program..."
+
+# error signal function 
+function catch_compiling_error() {
+  echo "Catch error"
+  exit 1
+}
+# catching any error
+trap catch_compiling_error ERR
+
+# checking if this directiory exists
+if [ -d "bin" ]; then
+  rm -rf bin
+  mkdir bin
+else
+  mkdir bin
+fi
+
+# compiling 
+gcc src/atoi.c src/snake.c src/main.c -lncurses -o bin/snake
+
+

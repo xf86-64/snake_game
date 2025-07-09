@@ -114,7 +114,6 @@ bool move_snake(Directions dir, Node **snake_head,
     while (ptr->next->next) {
       ptr = ptr->next;
     }
-
     remove_node(&new_head, ptr->next);
   } else
     *is_delete_tail = false;

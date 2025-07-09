@@ -1,1 +1,1 @@
-<h1 style="text-align: center;">Snake game</h1>
+<center><h1>Snake game</h1></center>

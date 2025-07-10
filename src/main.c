@@ -35,7 +35,11 @@ int main(int argc, char *argv[]) {
   Field field = {x_max, y_max};
 
   DefaultValues dv = {10, 10};
+  dv.snakeSymbol = '#';
+  dv.foodSymbol = '(';
+
   snake = init_snake(dv);
+
   food = fill_food_list(capacity_of_list_food, field);
   Directions dir = RIGHT; // default direction
   Directions prev_dir = dir;
@@ -46,9 +50,9 @@ int main(int argc, char *argv[]) {
   while (dir != -1 && !is_beyond_border(snake, field) && food != NULL &&
          !collision_with_body) {
     clear();
-    display(snake, ACS_BLOCK);
+    display(snake, dv.snakeSymbol);
 
-    generate_food(food, '(');
+    generate_food(food, dv.foodSymbol);
     prev_dir = get_direction(&dir, prev_dir);
 
     collision_with_body = move_snake(dir, &snake, &is_delete_tail);

@@ -14,6 +14,7 @@ typedef struct DefaultValues {
   unsigned int defaultSnakeX;
   unsigned int defaultSnakeY;
   chtype snakeSymbol;
+  chtype foodSymbol;
 } DefaultValues;
 typedef struct Field {
   unsigned int x_max;

@@ -9,7 +9,7 @@ if exist %CD% (
 ) else (
   mkdir bin
 )
-gcc src/atoi.c src/snake.c src/main.c -o bin/snake
+gcc src/atoi.c src/snake.c src/main.c -lncurses -o bin/snake
 if not %errorlevel% == 0 (
  cls
  echo Program terminated with an error 

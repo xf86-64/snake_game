@@ -5,11 +5,11 @@
 </div>
 
 ## Build
--First, clone the repository and go to it
+- First, clone the repository and go to it
 ```bash
 git clone <repository> && cd snake_game/
 ```
--Then build and run the project
+- Then build and run the project
 ```bash
 ./build.sh
 cd bin/

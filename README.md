@@ -5,5 +5,4 @@
 </div>
 
 <h2>Build</h2>
-<span>At first clone repository and go to the project directory</span>
-```git clone <repo> && cd snake_game/```
+___Unix-like systems__

@@ -3,12 +3,12 @@
 echo "Compiling program..."
 
 # error signal function 
-function catch_compiling_error() {
+function catch_error() {  
   echo "Catch error"
   exit 1
 }
 # catching any error
-trap catch_compiling_error ERR
+trap catch_error ERR
 
 # checking if this directiory exists
 if [ -d "bin" ]; then

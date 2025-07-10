@@ -5,6 +5,7 @@
 </div>
 
 ## Build
+**Linux**
 - First, clone the repository and go to it
 ```bash
 git clone <repository> && cd snake_game/

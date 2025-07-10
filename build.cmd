@@ -1,2 +1,18 @@
+
 @echo off
+title ./snake
+echo Compiling program...
+
+if exist %CD% (
+  del /S /Q bin
+  mkdir bin 
+) else (
+  mkdir bin
+)
+gcc src/atoi.c src/snake.c src/main.c -o bin/snake
+if %errorlevel% != 0 (
+ cls
+ echo Program terminated with an error 
+ pause 
+)
 

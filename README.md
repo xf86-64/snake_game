@@ -5,7 +5,7 @@
 </div>
 
 ## Build
-**Linux**
+**Unix-like systems**
 - First, clone the repository and go to it
 ```bash
 git clone <repository> && cd snake_game/
@@ -16,3 +16,5 @@ git clone <repository> && cd snake_game/
 cd bin/
 ./snake
 ```
+**Windows NT**
+

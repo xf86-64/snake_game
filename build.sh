@@ -19,6 +19,6 @@ else
 fi
 
 # compiling 
-gcc src/atoi.c src/snake.c src/main.c -lncurses -o bin/snake
+gcc src/*.c -lncurses -o bin/snake
 
 

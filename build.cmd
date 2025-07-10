@@ -4,7 +4,7 @@ title ./snake
 echo Compiling program...
 
 if exist %CD% (
-  del /S /Q bin
+  rmdir /s /q bin
   mkdir bin 
 ) else (
   mkdir bin

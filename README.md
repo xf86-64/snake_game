@@ -16,5 +16,4 @@ git clone <repository> && cd snake_game/
 cd bin/
 ./snake
 ```
-**Windows NT**
 

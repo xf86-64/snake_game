@@ -4,6 +4,9 @@
     <img class="screenshot" src="/screenshots/snake.jpg"/>
 </div>
 ---
-<h2>At first clone the repository and go to the project directory</h2> `git clone <repository> && cd snake_game/`
 
-
+<div>
+    <h2>Build</h2>
+    <span>At first clone repository and go to the project directory</span>
+    `git clone <repository> && cd snake_game`
+</div>

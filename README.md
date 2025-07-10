@@ -4,5 +4,8 @@
     <img class="screenshot" src="/screenshots/snake.jpg"/>
 </div>
 
-<h2>Build</h2>
-___Unix-like systems__
+## Build
+First, clone the repository and go to it
+```bash
+git clone <repository> && cd snake_game/
+```

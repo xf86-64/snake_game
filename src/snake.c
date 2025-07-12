@@ -8,7 +8,7 @@ static Node *create_node(unsigned int x, unsigned int y) {
   node->next = NULL;
   return node;
 }
-static void insert_at_head(Node **head, Node *node) {
+static inline void insert_at_head(Node **head, Node *node) {
   node->next = *head;
   *head = node;
 }
@@ -88,10 +88,7 @@ Directions get_direction(Directions *dir, Directions prev_dir) {
 }
 bool move_snake(Directions dir, Node **snake_head,
                 bool *restrict is_delete_tail) {
-
-  bool collision_with_body = false;
   int opX = 0, opY = 0;
-
   switch (dir) {
   case LEFT:
     opX = -1;
@@ -115,11 +112,16 @@ bool move_snake(Directions dir, Node **snake_head,
     while (ptr->next->next) {
       ptr = ptr->next;
     }
+    Node *ptr2 = new_head->next;
+    while (ptr2) {
+      if (ptr2->x == new_head->x && ptr2->y == new_head->y)
+        return true;
+      ptr2 = ptr2->next;
+    }
     remove_node(&new_head, ptr->next);
   } else
     *is_delete_tail = false;
-
-  return collision_with_body;
+  return false;
 }
 
 void display(Node *snake, const chtype symbol) {
@@ -131,7 +133,7 @@ void display(Node *snake, const chtype symbol) {
   snake = ptr;
 }
 
-bool is_beyond_border(Node *snake_head, Field field) {
+inline bool is_beyond_border(Node *snake_head, Field field) {
   return (snake_head->x < 0 || snake_head->y < 0 ||
           snake_head->x > field.x_max || snake_head->y > field.y_max);
 }
@@ -155,7 +157,7 @@ Node *fill_food_list(unsigned int foodCount, Field field) {
   }
   return head;
 }
-void generate_food(Node *food_list, const chtype symbol) {
+inline void generate_food(Node *food_list, const chtype symbol) {
   mvaddch(food_list->y, food_list->x, symbol);
 }
 static void remove_from_food_list(Node **food_list) {

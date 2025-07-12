@@ -7,6 +7,7 @@ Node *food = NULL;
 
 static void signal_of_immediate_exit(int sig) {
   delete_list(snake);
+  delete_list(food);
   endwin();
   exit(1);
 } // signal handler function
@@ -39,24 +40,26 @@ int main(int argc, char *argv[]) {
   dv.foodSymbol = '(';
 
   snake = init_snake(dv);
-
   food = fill_food_list(capacity_of_list_food, field);
-  Directions dir = RIGHT; // default direction
+  Directions dir = DOWN; // default direction
   Directions prev_dir = dir;
 
   timeout(100);
 
   bool is_delete_tail = false;
-  bool collision_with_body = false;
+  bool collision_flag = false;
+
+  struct timeval start;
+  struct timeval end;
   while (dir != -1 && !is_beyond_border(snake, field) && food != NULL &&
-         !collision_with_body) {
+         !collision_flag) {
     clear();
     display(snake, dv.snakeSymbol);
 
     generate_food(food, dv.foodSymbol);
     prev_dir = get_direction(&dir, prev_dir);
 
-    collision_with_body = move_snake(dir, &snake, &is_delete_tail);
+    collision_flag = move_snake(dir, &snake, &is_delete_tail);
 
     is_delete_tail = detect_eaten_food(&food, snake);
     refresh();

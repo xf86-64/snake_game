@@ -4,6 +4,20 @@
 function waiting() {
   sleep 0.1
 }
+function compile() {
+  # compiling(debug)
+  if [ "$1" == "debug" ]; then
+    echo "Compiling...(debug mode)"
+    gcc src/*.c -g -lncurses -o bin/snake 2>/dev/null
+  # compiling(normal)
+  elif [ "$1" == "normal" ]; then
+    echo "Compiling...(normal mode)"
+    gcc src/*.c -lncurses -o bin/snake 2>/dev/null
+  else
+    echo "unknown operation"
+    exit 1
+  fi
+}
 waiting
 echo "Create the necessary directories..."
 # checking if this directiory exists
@@ -19,14 +33,12 @@ if [ $# -ne 0 ]; then
   while [ -n "$1" ] 
   do 
     case "$1" in 
-      -d) echo "Compiling...(debug mode)"; gcc src/*.c -g -lncurses -o bin/snake 2</dev/null; break;;
+      -d) compile "debug"; break;;
       *) echo "argument $1 not found"; waiting; echo "deleting directories..."; rm -rf bin; exit 1; break;;   
     esac
   done
 else  
-  # compiling(normal mode)
-  echo "Compiling...(normal mode)"
-  gcc src/*.c -lncurses -o bin/snake 2>/dev/null # redirecting output to nowhere
+  compile "normal" 
 fi
 
 waiting

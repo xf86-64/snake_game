@@ -1,7 +1,11 @@
 #!/bin/bash
 
-echo "Compiling program..."
-
+# waiting after command execution
+function waiting() {
+  sleep 0.1
+}
+waiting
+echo "Create the necessary directories..."
 # checking if this directiory exists
 if [ ! -d "bin" ]; then
   mkdir bin
@@ -9,10 +13,23 @@ else
   rm -rf bin
   mkdir bin
 fi
+waiting
+# process arguments(keys) when running a script. In this case processed key -d for debug compiling
+if [ $# -ne 0 ]; then
+  while [ -n "$1" ] 
+  do 
+    case "$1" in 
+      -d) echo "Compiling...(debug mode)"; gcc src/*.c -g -lncurses -o bin/snake 2</dev/null; break;;
+      *) echo "argument $1 not found"; waiting; echo "deleting directories..."; rm -rf bin; exit 1; break;;   
+    esac
+  done
+else  
+  # compiling(normal mode)
+  echo "Compiling...(normal mode)"
+  gcc src/*.c -lncurses -o bin/snake 2>/dev/null # redirecting output to nowhere
+fi
 
-# compiling 
-gcc src/*.c -lncurses -o bin/snake 2>/dev/null # redirecting output to nowhere
-
+waiting
 # check last executed command for errors (in this case compliling string (22))
 if [ $? -ne 0 ]; then  
   echo "Compiling error"
@@ -20,5 +37,6 @@ if [ $? -ne 0 ]; then
 else
   echo "Done"
 fi
+
 
 

@@ -1,5 +1,4 @@
 #include "../include/snake.h"
-#include <ncurses.h>
 
 static Node *create_node(unsigned int x, unsigned int y) {
   Node *node = malloc(sizeof(Node));

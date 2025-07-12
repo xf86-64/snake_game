@@ -30,13 +30,10 @@ fi
 waiting
 # process arguments(keys) when running a script. In this case processed key -d for debug compiling
 if [ $# -ne 0 ]; then
-  while [ -n "$1" ] 
-  do 
     case "$1" in 
-      -d) compile "debug"; break;;
-      *) echo "argument $1 not found"; waiting; echo "deleting directories..."; rm -rf bin; exit 1; break;;   
+      -d) compile "debug";;
+      *) echo "argument $1 not found"; waiting; echo "deleting directories..."; rm -rf bin; exit 1;;   
     esac
-  done
 else  
   compile "normal" 
 fi

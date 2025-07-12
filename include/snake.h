@@ -16,6 +16,7 @@ typedef struct DefaultValues {
   chtype snakeSymbol;
   chtype foodSymbol;
 } DefaultValues;
+
 typedef struct Field {
   unsigned int x_max;
   unsigned int y_max;

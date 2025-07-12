@@ -1,4 +1,5 @@
 #include "../include/snake.h"
+#include <ncurses.h>
 
 static Node *create_node(unsigned int x, unsigned int y) {
   Node *node = malloc(sizeof(Node));
@@ -118,14 +119,6 @@ bool move_snake(Directions dir, Node **snake_head,
   } else
     *is_delete_tail = false;
 
-  Node *ptr = new_head->next;
-  while (ptr) {
-    if (new_head->x == ptr->x && new_head->y == ptr->y) {
-      collision_with_body = true;
-      break;
-    }
-    ptr = ptr->next;
-  }
   return collision_with_body;
 }
 

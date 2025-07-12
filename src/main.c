@@ -45,6 +45,7 @@ int main(int argc, char *argv[]) {
   Directions prev_dir = dir;
 
   timeout(100);
+
   bool is_delete_tail = false;
   bool collision_with_body = false;
   while (dir != -1 && !is_beyond_border(snake, field) && food != NULL &&

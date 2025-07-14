@@ -32,6 +32,6 @@ Directions get_direction(Directions *dir, Directions prev_dir);
 bool move_snake(Directions dir, Node **snake_head, bool *is_delete_tail);
 void display(Node *snake, const chtype symbol);
 bool is_beyond_border(Node *snake_head, Field field);
-Node *fill_food_list(unsigned int foodCount, Field field);
+Node *fill_food_list(unsigned int foodCount, Field field, Node *snake);
 void generate_food(Node *food_list, const chtype symbol);
 bool detect_eaten_food(Node **food_list, Node *snake_head);

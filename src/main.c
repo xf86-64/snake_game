@@ -40,7 +40,8 @@ int main(int argc, char *argv[]) {
   dv.foodSymbol = '(';
 
   snake = init_snake(dv);
-  food = fill_food_list(capacity_of_list_food, field);
+  food = fill_food_list(capacity_of_list_food, field, snake);
+
   Directions dir = RIGHT; // default direction
   Directions prev_dir = dir;
 

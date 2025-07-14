@@ -147,12 +147,13 @@ void display(Node *snake, const chtype symbol) {
 }
 
 inline bool is_beyond_border(Node *snake_head, Field field) {
-  return (snake_head->x < 0 || snake_head->y <= 1 ||
+  return (snake_head->x < 0 || snake_head->y <= 0 ||
           snake_head->x > field.x_max || snake_head->y >= field.y_max);
 }
 
-Node *fill_food_list(unsigned int foodCount, Field field) {
+Node *fill_food_list(unsigned int foodCount, Field field, Node *snake) {
 
+  Node *ptr_snake = snake;
   unsigned int min_coord_x = 1;
   unsigned int max_coord_x = field.x_max;
 
@@ -166,6 +167,14 @@ Node *fill_food_list(unsigned int foodCount, Field field) {
   for (unsigned int i = 0; i < foodCount - 1; i++) {
 
     Node *generated = create_node(rand() % expressionX, rand() % expressionY);
+    Node *ptr = generated;
+    while (ptr) {
+      if (ptr->x == ptr_snake->x && ptr->y == ptr_snake->y) {
+        i--;
+        break;
+      }
+      ptr = ptr->next;
+    }
     insert_at_head(&head, generated);
   }
   return head;

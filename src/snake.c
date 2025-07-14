@@ -85,6 +85,15 @@ Directions get_direction(Directions *dir, Directions prev_dir) {
   }
   return *dir;
 }
+static unsigned int getSize(Node *snake) {
+  Node *ptr = snake;
+  unsigned int count = 0;
+  while (ptr) {
+    count++;
+    ptr = ptr->next;
+  }
+  return count;
+}
 bool move_snake(Directions dir, Node **snake_head,
                 bool *restrict is_delete_tail) {
   int opX = 0, opY = 0;
@@ -102,6 +111,7 @@ bool move_snake(Directions dir, Node **snake_head,
     opY = 1;
     break;
   }
+  int size = getSize(*snake_head);
   unsigned int newHeadX = (*snake_head)->x + (opX),
                newHeadY = (*snake_head)->y + (opY);
   Node *new_head = create_node(newHeadX, newHeadY);
@@ -111,15 +121,19 @@ bool move_snake(Directions dir, Node **snake_head,
     while (ptr->next->next) {
       ptr = ptr->next;
     }
+
     Node *ptr2 = new_head->next;
-    while (ptr2) {
-      if (ptr2->x == new_head->x && ptr2->y == new_head->y)
-        return true;
-      ptr2 = ptr2->next;
+    if (size > 2) {
+      while (ptr2) {
+        if (ptr2->x == new_head->x && ptr2->y == new_head->y)
+          return true;
+        ptr2 = ptr2->next;
+      }
     }
     remove_node(&new_head, ptr->next);
   } else
     *is_delete_tail = false;
+
   return false;
 }
 
@@ -133,8 +147,8 @@ void display(Node *snake, const chtype symbol) {
 }
 
 inline bool is_beyond_border(Node *snake_head, Field field) {
-  return (snake_head->x < 0 || snake_head->y < 0 ||
-          snake_head->x > field.x_max || snake_head->y > field.y_max);
+  return (snake_head->x < 0 || snake_head->y <= 1 ||
+          snake_head->x > field.x_max || snake_head->y >= field.y_max);
 }
 
 Node *fill_food_list(unsigned int foodCount, Field field) {

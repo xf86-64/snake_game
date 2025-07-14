@@ -41,16 +41,13 @@ int main(int argc, char *argv[]) {
 
   snake = init_snake(dv);
   food = fill_food_list(capacity_of_list_food, field);
-  Directions dir = DOWN; // default direction
+  Directions dir = RIGHT; // default direction
   Directions prev_dir = dir;
 
   timeout(100);
 
   bool is_delete_tail = false;
   bool collision_flag = false;
-
-  struct timeval start;
-  struct timeval end;
   while (dir != -1 && !is_beyond_border(snake, field) && food != NULL &&
          !collision_flag) {
     clear();
@@ -60,7 +57,6 @@ int main(int argc, char *argv[]) {
     prev_dir = get_direction(&dir, prev_dir);
 
     collision_flag = move_snake(dir, &snake, &is_delete_tail);
-
     is_delete_tail = detect_eaten_food(&food, snake);
     refresh();
   }
